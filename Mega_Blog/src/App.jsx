@@ -8,6 +8,7 @@ console.log(import.meta.env.VITE_APPWRITE_URL);
   return (
     <>
       <h1>Blog App in AppWrite</h1>
+      <h2>Hell</h2>
     </>
   )
 }
