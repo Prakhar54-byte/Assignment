@@ -1,16 +1,43 @@
-
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import authService from './appwrite/auth'
 import './App.css'
+import { login,logOut } from './store/authSliced'
+import Header from './components/Header/Header'
+import Footer from './components/Footer/Footer'
 
 function App() {
  
-console.log(import.meta.env.VITE_APPWRITE_URL);
+const [loading,setLoading ]= useState(true)
+const dispatch = useDispatch()
 
-  return (
-    <>
-      <h1>Blog App in AppWrite</h1>
-      <h2>Hell</h2>
-    </>
+useEffect(() => {
+  authService.getCurrentUser()
+  .then((response) => {
+    if(response){
+    dispatch(login(login({userData: response})))
+    }else{
+      dispatch(logOut())
+    }
+  })
+  // .catch((error) => { 
+  //   console.log("App :: useEffect :: error", error)
+  // })
+  .finally(
+    ()=>{
+      setLoading(false)
+    }
   )
+}, [])
+  return !loading ? <div>Loading...</div> : (<div className='min-h-screen'>
+    <div className='w-full black'>
+      <Header/>
+      <main>
+        {/* Outlet */}
+      </main>
+      <Footer/>
+    </div>
+  </div>)
 }
 
 export default App
